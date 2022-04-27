@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IngredientPickUp : PickUpObject
+public interface ISelectableObject
 {
-   
+    void OnSelected();
+
+    void OnDeSelected();
 }

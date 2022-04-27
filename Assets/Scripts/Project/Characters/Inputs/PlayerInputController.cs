@@ -5,22 +5,14 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour,IInputController
 {
+    public static PlayerInputController current = null;
+
     GameInputActions m_GameInputActions = null;
     Camera m_MainCamera = null;
 
-    public Vector3 GetFacingDirection()
+    public GameInputActions GetInputActions()
     {
-        if (m_MainCamera != null)
-        {
-            Ray mouseRay = m_MainCamera.ScreenPointToRay(m_GameInputActions.Player.Aim.ReadValue<Vector2>());
-            if (Physics.Raycast(mouseRay,out RaycastHit raycastHit))
-            {
-                Vector3 direction = raycastHit.point - transform.position;
-                direction.y = 0;
-                return direction;
-            }
-        }
-        return Vector3.forward;
+        return m_GameInputActions;
     }
 
     public Vector2 GetInputDirection()
@@ -36,6 +28,10 @@ public class PlayerInputController : MonoBehaviour,IInputController
     // Start is called before the first frame update
     void Awake()
     {
+        if(current!= this)
+        {
+            current = this;
+        }
         m_GameInputActions = new GameInputActions();
         m_GameInputActions.Player.Enable();
 
