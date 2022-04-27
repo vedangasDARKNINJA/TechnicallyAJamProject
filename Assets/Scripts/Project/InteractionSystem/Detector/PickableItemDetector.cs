@@ -6,8 +6,7 @@ using UnityEngine;
 public class PickableItemDetector : MonoBehaviour
 {
     public float radius = 3;
-    //public float angleRange = 25;
-
+    
     [SerializeField]
     private DetectorWeightFunctionSO m_WeightFunction;
 

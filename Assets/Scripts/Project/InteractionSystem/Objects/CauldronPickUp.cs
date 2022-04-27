@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CauldronObject : MonoBehaviour, IPickableObject
+public class CauldronPickUp : MonoBehaviour, IPickableObject
 {
     /*
      * QUICK AND DIRTY
      */
-    public Color notSelectedColor = Color.green;
-    public Color selectedColor = Color.red;
-
+    
     private Material m_Material = null;
 
     private void Awake()
@@ -29,10 +27,10 @@ public class CauldronObject : MonoBehaviour, IPickableObject
 
     public void OnSelected()
     {
-        m_Material.color = selectedColor;
+        m_Material.SetInt("_IsSelected", 1);
     }
     public void OnDeSelected()
     {
-        m_Material.color = notSelectedColor;
+        m_Material.SetInt("_IsSelected", 0);
     }
 }

@@ -29,6 +29,7 @@ Material:
     - _EmissiveStrengh: 0
     - _GradientStrength: 1
     - _Height: 1.22
+    - _IsSelected: 0
     - _yPosHigh: 12.73
     - _yPosLow: -9.3
     m_Colors:
@@ -38,4 +39,5 @@ Material:
     - _ColorLow: {r: 1, g: 0, b: 0, a: 1}
     - _ColorX: {r: 0, g: 0, b: 0, a: 0}
     - _ColorY: {r: 0, g: 0, b: 0, a: 0}
+    - _SelectedColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

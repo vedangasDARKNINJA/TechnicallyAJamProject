@@ -16,9 +16,5 @@ public class PickableItemDetectorEditor : Editor
     {
         Handles.color = Color.red;
         Handles.DrawWireDisc(m_PickableItemDetector.transform.position, Vector3.up, m_PickableItemDetector.radius);
-        /*
-        Vector3 direction = Quaternion.AngleAxis(-0.5f * Mathf.Abs(m_PickableItemDetector.angleRange),Vector3.up) * m_PickableItemDetector.transform.forward;
-        Handles.DrawSolidArc(m_PickableItemDetector.transform.position, Vector3.up, direction, Mathf.Abs(m_PickableItemDetector.angleRange), m_PickableItemDetector.radius);
-        */
     }
 }
