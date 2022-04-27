@@ -27,21 +27,12 @@ public class PickableItemDetector : MonoBehaviour
     private bool IsADropTarget => m_SelectedGameObject != null && m_SelectedGameObject.GetComponent<IDropTargetObject>() != null;
     private bool IsAPickableObject => m_SelectedGameObject != null && m_SelectedGameObject.GetComponent<IPickableObject>() != null;
 
-    private void OnEnable()
+    private void Awake()
     {
         GameInputActions inputActions = PlayerInputController.current?.GetInputActions();
         if (inputActions != null)
         {
             inputActions.Player.Pickup.performed += OnPickUpActionReceived;
-        }
-    }
-
-    private void OnDisable()
-    {
-        GameInputActions inputActions = PlayerInputController.current?.GetInputActions();
-        if (inputActions != null)
-        {
-            inputActions.Player.Pickup.performed -= OnPickUpActionReceived;
         }
     }
 
@@ -101,7 +92,7 @@ public class PickableItemDetector : MonoBehaviour
             {
                 m_HasPickedUpItem = false;
                 GameObject target = m_FollowSlot.Target;
-                if(m_SelectedGameObject != null)
+                if(IsADropTarget)
                 {
                     m_FollowSlot.Empty();
                     m_SelectedGameObject?.GetComponent<IDropTargetObject>()?.OnObjectDropped(target);
