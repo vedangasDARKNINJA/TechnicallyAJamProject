@@ -11,9 +11,6 @@ public class CharacterMovement : MonoBehaviour
 
     private IInputController m_InputController = null;
 
-
-    private Vector3 m_RotationVelocity = Vector3.zero;
-
     // Start is called before the first frame update
     void Awake()
     {

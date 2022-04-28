@@ -2,35 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CauldronPickUp : MonoBehaviour, IPickableObject
+public class CauldronPickUp : PickUpObject, IDropTargetObject
 {
-    /*
-     * QUICK AND DIRTY
-     */
-    
-    private Material m_Material = null;
+    public ObjectTypes acceptTypes;
 
-    private void Awake()
+    public bool AcceptsObjectType(ObjectTypes objectType)
     {
-        m_Material = GetComponent<MeshRenderer>().material;
+        return ((int)acceptTypes & (int)objectType) != 0;
     }
 
-    public void OnDrop()
+    public void OnObjectDropped(GameObject droppedObject)
     {
-        throw new System.NotImplementedException();
-    }
+        // Todo: check if ingredient matching recipe
 
-    public void OnPickUp()
-    {
-        throw new System.NotImplementedException();
-    }
 
-    public void OnSelected()
-    {
-        m_Material.SetInt("_IsSelected", 1);
-    }
-    public void OnDeSelected()
-    {
-        m_Material.SetInt("_IsSelected", 0);
+        Destroy(droppedObject);
     }
 }
