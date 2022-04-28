@@ -5,6 +5,16 @@ using UnityEngine.InputSystem;
 
 public class PickableItemDetector : MonoBehaviour
 {
+    private static T AsA<T>(GameObject obj)
+    {
+        T component = default;
+        if (obj != null)
+        {
+            component = obj.GetComponent<T>();
+        }
+        return component;
+    }
+
     public float radius = 3;
 
     [SerializeField]
@@ -17,35 +27,28 @@ public class PickableItemDetector : MonoBehaviour
 
     private GameObject m_SelectedGameObject = null;
 
+    private GameObject m_PickedGameObject = null;
+
     [SerializeField]
     private FollowSlot m_FollowSlot = null;
 
     private bool m_HasPickedUpItem = false;
     public bool hasPickedUpItem => m_HasPickedUpItem;
 
-
-    private bool IsADropTarget => m_SelectedGameObject != null && m_SelectedGameObject.GetComponent<IDropTargetObject>() != null;
-    private bool IsAPickableObject => m_SelectedGameObject != null && m_SelectedGameObject.GetComponent<IPickableObject>() != null;
-
     private void Awake()
     {
-        GameInputActions inputActions = PlayerInputController.current?.GetInputActions();
-        if (inputActions != null)
-        {
-            inputActions.Player.Pickup.performed += OnPickUpActionReceived;
-        }
+        print("pick up detector awake");
+        GameInputActions inputActions = InputSystemController.instance.gameInputActions;
+        inputActions.Player.Pickup.performed += OnPickUpActionReceived;
     }
 
     public void FixedUpdate()
     {
         Collider[] overlappingColliders = Physics.OverlapSphere(transform.position, radius, m_PickablesMask);
-        if (m_SelectedGameObject != null)
-        {
-            m_SelectedGameObject.GetComponent<ISelectableObject>()?.OnDeSelected();
-            m_SelectedGameObject = null;
-        }
+        
 
         m_BestWeightedScore = float.MaxValue;
+        GameObject selectionObject = null;
 
         foreach (var collider in overlappingColliders)
         {
@@ -57,21 +60,55 @@ public class PickableItemDetector : MonoBehaviour
             if (weight < m_BestWeightedScore)
             {
                 m_BestWeightedScore = weight;
-                m_SelectedGameObject = collider.gameObject;
+                selectionObject = collider.gameObject;
             }
         }
 
-        if (m_SelectedGameObject != null)
+        if (selectionObject != null)
         {
-            // Do the pickup logic
-            if ((!m_HasPickedUpItem && IsAPickableObject) || (m_HasPickedUpItem && IsADropTarget))
-            {
-                m_SelectedGameObject.GetComponent<ISelectableObject>()?.OnSelected();
-            }
-
+            m_SelectedGameObject = selectionObject;
 #if UNITY_EDITOR
-            Debug.DrawLine(transform.position, m_SelectedGameObject.transform.position, Color.green);
+            Debug.DrawLine(transform.position, selectionObject.transform.position, Color.green);
 #endif
+            if (m_HasPickedUpItem)
+            {
+                IDropTargetObject dropTarget = AsA<IDropTargetObject>(m_SelectedGameObject);
+                if (dropTarget != null)
+                {
+                    IPickableObject pickable = AsA<IPickableObject>(m_PickedGameObject);
+                    if (pickable != null)
+                    {
+                        if (dropTarget.AcceptsObjectType(pickable.GetObjectTypes()))
+                        {
+                            ISelectableObject selectable = AsA<ISelectableObject>(m_SelectedGameObject);
+                            if (selectable != null)
+                            {
+                                selectable.OnSelected();
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ISelectableObject selectable = AsA<ISelectableObject>(m_SelectedGameObject);
+                if (selectable != null)
+                {
+                    selectable.OnSelected();
+                }
+            }
+        }
+        else
+        {
+            if(m_SelectedGameObject!= null)
+            {
+                ISelectableObject selectable = AsA<ISelectableObject>(m_SelectedGameObject);
+                if (selectable != null)
+                {
+                    selectable.OnDeSelected();
+                }
+                m_SelectedGameObject = null;
+            }
         }
     }
 
@@ -81,30 +118,57 @@ public class PickableItemDetector : MonoBehaviour
         {
             if (!m_HasPickedUpItem)
             {
-                m_HasPickedUpItem = true;
-                if(IsAPickableObject)
+                if (m_SelectedGameObject != null)
                 {
-                    m_SelectedGameObject.GetComponent<IPickableObject>()?.OnPickUp();
-                    m_FollowSlot.FillSlot(m_SelectedGameObject);
+                    ISelectableObject selectable = AsA<ISelectableObject>(m_SelectedGameObject);
+                    if (selectable != null)
+                    {
+                        selectable.OnDeSelected();
+                    }
+                    IPickableObject pickable = AsA<IPickableObject>(m_SelectedGameObject);
+                    if (pickable != null)
+                    {
+                        pickable.OnPickUp();
+                        m_PickedGameObject = m_SelectedGameObject;
+                        m_FollowSlot.FillSlot(m_PickedGameObject);
+                    }
+                    m_HasPickedUpItem = true;
                 }
             }
             else if (m_HasPickedUpItem)
             {
+                IPickableObject pickable = AsA<IPickableObject>(m_PickedGameObject);
+                bool dropped = false;
+                if (m_SelectedGameObject != null)
+                {
+                    ISelectableObject selectable = AsA<ISelectableObject>(m_SelectedGameObject);
+                    if (selectable != null)
+                    {
+                        if (selectable.isSelected)
+                        {
+                            IDropTargetObject dropTarget = AsA<IDropTargetObject>(m_SelectedGameObject);
+                            if (dropTarget != null)
+                            {
+                                dropTarget.OnObjectDropped(m_PickedGameObject);
+                            }
+                            dropped = true;
+                        }
+                    }
+                }
+
+                m_FollowSlot.Empty();
+                m_PickedGameObject = null;
+                if (!dropped)
+                {
+                    if (pickable != null)
+                    {
+                        pickable.OnDrop(transform.forward);
+                    }
+                }
+
                 m_HasPickedUpItem = false;
-                GameObject target = m_FollowSlot.Target;
-                if(IsADropTarget)
-                {
-                    m_FollowSlot.Empty();
-                    m_SelectedGameObject?.GetComponent<IDropTargetObject>()?.OnObjectDropped(target);
-                }
-                else
-                {
-                    m_FollowSlot.Empty();
-                    target?.GetComponent<IPickableObject>()?.OnDrop(transform.forward);
-                }
-                m_SelectedGameObject = null;
             }
         }
-    }
 
+    }
 }
