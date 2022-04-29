@@ -1,8 +1,6 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class WorldWidgetLayer : MonoBehaviour
 {
@@ -33,7 +31,10 @@ public class WorldWidgetLayer : MonoBehaviour
         InteractionPromptComponent.OnShow += InteractionPrompt_OnShow;
         InteractionPromptComponent.OnHide += InteractionPrompt_OnHide;
         InteractionPromptComponent.OnRemoved += InteractionPrompt_OnRemoved;
+        InteractionPromptComponent.OnPromptDataChanged += InteractionPromptComponent_OnPromptDataChanged;
     }
+
+    
 
     private void OnDisable()
     {
@@ -41,6 +42,7 @@ public class WorldWidgetLayer : MonoBehaviour
         InteractionPromptComponent.OnShow -= InteractionPrompt_OnShow;
         InteractionPromptComponent.OnHide -= InteractionPrompt_OnHide;
         InteractionPromptComponent.OnRemoved -= InteractionPrompt_OnRemoved;
+        InteractionPromptComponent.OnPromptDataChanged -= InteractionPromptComponent_OnPromptDataChanged;
     }
 
     private void OnDestroy()
@@ -49,6 +51,7 @@ public class WorldWidgetLayer : MonoBehaviour
         InteractionPromptComponent.OnShow -= InteractionPrompt_OnShow;
         InteractionPromptComponent.OnHide -= InteractionPrompt_OnHide;
         InteractionPromptComponent.OnRemoved -= InteractionPrompt_OnRemoved;
+        InteractionPromptComponent.OnPromptDataChanged -= InteractionPromptComponent_OnPromptDataChanged;
     }
 
     private void InteractionPrompt_OnAdded(InteractionPromptComponent obj)
@@ -58,17 +61,40 @@ public class WorldWidgetLayer : MonoBehaviour
         data.interactionPromptContainer = Instantiate(interactionPromptContainerPrefab, transform);
         data.containerCanvasGroup = data.interactionPromptContainer.GetComponent<CanvasGroup>();
         data.containerCanvasGroup.alpha = 0.0f;
-        data.interactionPrompts = new InteractionPromptWidget[obj.buttons.Length];
-        for (int i = 0; i < obj.buttons.Length; ++i)
+
+        PromptButtonState buttonState = obj.GetStateData();
+        if (buttonState != null)
         {
-            GameObject go = Instantiate(interactionPromptPrefab, data.interactionPromptContainer.transform);
-            data.interactionPrompts[i] = go.GetComponent<InteractionPromptWidget>();
-            data.interactionPrompts[i].Init(obj.buttons[i]);
+            data.interactionPrompts = new InteractionPromptWidget[buttonState.buttons.Length];
+            for (int i = 0; i < data.interactionPrompts.Length; ++i)
+            {
+                GameObject go = Instantiate(interactionPromptPrefab, data.interactionPromptContainer.transform);
+                data.interactionPrompts[i] = go.GetComponent<InteractionPromptWidget>();
+                data.interactionPrompts[i].Init(buttonState.buttons[i]);
+            }
+            m_InteractionPrompts.Add(obj, data);
+        }
+    }
+
+    private void InteractionPromptComponent_OnPromptDataChanged(InteractionPromptComponent obj)
+    {
+        InteractionPromptData data = m_InteractionPrompts[obj];
+        foreach(var prompt in data.interactionPrompts)
+        {
+            Destroy(prompt.gameObject);
         }
 
-        data.interactionPromptContainer.GetComponent<LayoutGroup>()?.CalculateLayoutInputHorizontal();
-
-        m_InteractionPrompts.Add(obj, data);
+        PromptButtonState buttonState = obj.GetStateData();
+        if (buttonState != null)
+        {
+            data.interactionPrompts = new InteractionPromptWidget[buttonState.buttons.Length];
+            for (int i = 0; i < data.interactionPrompts.Length; ++i)
+            {
+                GameObject go = Instantiate(interactionPromptPrefab, data.interactionPromptContainer.transform);
+                data.interactionPrompts[i] = go.GetComponent<InteractionPromptWidget>();
+                data.interactionPrompts[i].Init(buttonState.buttons[i]);
+            }
+        }
     }
 
     private void InteractionPrompt_OnShow(InteractionPromptComponent obj)

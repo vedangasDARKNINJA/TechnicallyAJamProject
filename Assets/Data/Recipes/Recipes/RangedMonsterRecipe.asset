@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21895d9b6e99284ca24a97b28b33cf1, type: 3}
+  m_Name: RangedMonsterRecipe
+  m_EditorClassIdentifier: 
+  RecipeData:
+  - ingredient: {fileID: 11400000, guid: fc370fe33144e554c91304a3bbed7ee3, type: 2}
+    quantity: 1
+  - ingredient: {fileID: 11400000, guid: 990e1ab70d3d5eb4fbcc57e351940a93, type: 2}
+    quantity: 1
+  - ingredient: {fileID: 11400000, guid: a4f3f22dc36fa5d4fac34244c6e740de, type: 2}
+    quantity: 1
+  outcomeMonster: {fileID: 11400000, guid: 1f188f9a96bb58e4cb6669c29312de58, type: 2}
+  outcomePrefab: {fileID: 0}
