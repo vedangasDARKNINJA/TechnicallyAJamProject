@@ -8,8 +8,6 @@ Properties
 		_MainTex ("Texture", 2D) = "white" {}
 		_Color1 ("First Color", Color) = (1,1,1,1)
 		_Color2 ("Second Color", Color) = (1,1,1,1)
-		_SelectedColor ("Selected Color", Color) = (1,1,1,1)
-		[MaterialToggle]_IsSelected("Is Selected", int) = 0
 		_Height ("Height", Float) = 10.0
 	}
 	SubShader
@@ -48,8 +46,6 @@ Properties
 			float4 _MainTex_ST;
 			float4 _Color1;
 			float4 _Color2;
-			float4 _SelectedColor; 
-			int _IsSelected;
 			float _Height;
 			
 			v2f vert (appdata v)
@@ -67,16 +63,8 @@ Properties
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-				
-				if (_IsSelected > 0)
-				{
-					col = col * _SelectedColor;
-				}
-				else
-				{
-					fixed4 gradient = lerp(_Color1, _Color2, i.worldPos.y / _Height);
-					col = col * gradient;
-				}
+				fixed4 gradient = lerp(_Color1, _Color2, i.worldPos.y / _Height);
+				col = col * gradient;
 				// apply fog
 				UNITY_APPLY_FOG(i.fogCoord, col);
 				return col;
