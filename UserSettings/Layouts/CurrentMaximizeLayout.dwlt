@@ -262,7 +262,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 1
       snapOffset: {x: 67.5, y: 86}
-      snapOffsetDelta: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: -30}
       snapCorner: 0
       id: Orientation
       index: 0
@@ -1334,13 +1334,13 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Materials/Shaders
+    - Assets/Scripts/Project
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Materials/Shaders
+  - Assets/Scripts/Project
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\GitHub\TechnicallyAJamProject
   m_LockTracker:
