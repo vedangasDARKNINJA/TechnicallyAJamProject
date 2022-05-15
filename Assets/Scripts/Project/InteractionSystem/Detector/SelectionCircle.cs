@@ -27,6 +27,9 @@ public class SelectionCircle : MonoBehaviour
     private float m_GroundOffset = 0.2f;
 
     [SerializeField]
+    private bool m_Animate = true;
+
+    [SerializeField]
     private AnimationData m_SelectedData;
 
     [SerializeField]
@@ -37,15 +40,15 @@ public class SelectionCircle : MonoBehaviour
 
     private SelectionState m_CurrentState;
     private Transform m_CurrentTransform;
-    private Vector3 m_InitialScale = Vector3.zero;
+
+    [SerializeField]
+    private float m_Scale = 2.0f;
 
     // Start is called before the first frame update
     void Awake()
     {
         m_Renderer = GetComponent<SpriteRenderer>();
-        m_InitialScale = transform.localScale;
-
-        StateNone();
+        StateNone(true);
     }
 
     public void SetState(SelectionState state, Transform selectedTransform)
@@ -78,7 +81,7 @@ public class SelectionCircle : MonoBehaviour
                     }
                 case SelectionState.None:
                     {
-                        StateNone();
+                        StateNone(true);
                         break;
                     }
                 default:
@@ -91,50 +94,86 @@ public class SelectionCircle : MonoBehaviour
 
     void StateSelected()
     {
+        gameObject.SetActive(true);
         transform.position = m_CurrentTransform.position + m_GroundOffset * Vector3.up;
-        transform.DOScale(m_InitialScale, m_SelectedData.duration)
-            .From(Vector3.zero)
-            .SetEase(m_SelectedData.ease);
+        transform.DOKill();
+        if (m_Animate)
+        {
+            transform.DOScale(m_Scale, m_SelectedData.duration)
+                .From(0.0f)
+                .SetEase(m_SelectedData.ease);
+        }
+        else
+        {
+            transform.localScale = m_Scale * Vector3.one;
+        }
 
-        m_Renderer.DOColor(m_SelectedData.color, m_SelectedData.duration)
-            .From(m_Renderer.color)
-            .SetEase(Ease.InOutQuad);
+        m_Renderer.DOKill();
+        if (m_Animate)
+        {
+            m_Renderer.DOColor(m_SelectedData.color, m_SelectedData.duration)
+                .From(m_Renderer.color)
+                .SetEase(Ease.InOutQuad);
+        }
+        else
+        {
+            m_Renderer.color = m_SelectedData.color;
+        }
     }
 
     void StateDeselected()
     {
+        transform.DOKill();
         transform.position = m_CurrentTransform.position + m_GroundOffset * Vector3.up;
-        transform.DOScale(Vector3.zero, m_DeselectedData.duration)
-            .SetEase(m_DeselectedData.ease);
+        gameObject.SetActive(false);
     }
 
     void StateIncompatible()
     {
+        gameObject.SetActive(true);
         transform.position = m_CurrentTransform.position + m_GroundOffset * Vector3.up;
-        transform.DOScale(m_InitialScale, m_SelectedData.duration)
-            .From(Vector3.zero)
-            .SetEase(m_IncompatibleData.ease);
+        transform.DOKill();
+        if (m_Animate)
+        {
+            transform.DOScale(m_Scale, m_SelectedData.duration)
+                .From(0.0f)
+                .SetEase(m_IncompatibleData.ease);
+        }
+        else
+        {
+            transform.localScale = m_Scale * Vector3.one;
+        }
 
-        m_Renderer.DOColor(m_IncompatibleData.color, m_IncompatibleData.duration)
-            .From(m_Renderer.color)
-            .SetEase(Ease.InOutQuad);
+        m_Renderer.DOKill();
+        if (m_Animate)
+        {
+            m_Renderer.DOColor(m_IncompatibleData.color, m_IncompatibleData.duration)
+                .From(m_Renderer.color)
+                .SetEase(Ease.InOutQuad);
+        }
+        else
+        {
+            m_Renderer.color = m_IncompatibleData.color;
+        }
     }
 
     void StateNone(bool skipAnimation = false)
     {
-        if (skipAnimation)
+        transform.DOKill();
+
+        if (m_CurrentTransform)
         {
-            transform.localScale = Vector3.zero;
+            transform.position = m_CurrentTransform.position + m_GroundOffset * Vector3.up;
+        }
+
+        if (m_Animate && !skipAnimation)
+        {
+            transform.DOScale(0.0f, 0.2f)
+                .SetEase(Ease.Linear);
         }
         else
         {
-            if (m_CurrentTransform)
-            {
-                transform.position = m_CurrentTransform.position + m_GroundOffset * Vector3.up;
-            }
-
-            transform.DOScale(Vector3.zero, 0.2f)
-                .SetEase(Ease.Linear);
+            gameObject.SetActive(false);
         }
     }
 }

@@ -24,5 +24,11 @@ public class MonsterSO : BaseIngredientSO
     public MonsterFriendliness monsterFriendliness;
     public MonsterCategory category;
 
+    // Stats
+    public float health = 0;
+    public float attack = 0;
+    public float defense = 0;
+    public float immunity = 0;
+    
     public GameObject prefab;
 }

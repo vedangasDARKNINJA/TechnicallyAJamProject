@@ -21,11 +21,27 @@ public class CauldronPickUp : PickUpObject, IDropTargetObject
 
     public void OnObjectDropped(GameObject droppedObject)
     {
-        // Todo: check if ingredient matching recipe
         if(m_Manager!= null)
         {
             m_Manager.AddIngredient(droppedObject);
         }
-        Destroy(droppedObject);
+    }
+
+    public override void OnPickUp()
+    {
+        base.OnPickUp();
+        if(TryGetComponent(out CauldronManager manager))
+        {
+            manager.SetState(CauldronState.Picked);
+        }
+    }
+
+    public override void OnDrop(Vector3 forward)
+    {
+        base.OnDrop(forward);
+        if (TryGetComponent(out CauldronManager manager))
+        {
+            manager.RestorePreviousState();
+        }
     }
 }

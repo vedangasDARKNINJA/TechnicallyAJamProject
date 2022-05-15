@@ -12,6 +12,8 @@ public class InteractionPromptWidget : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI buttonText = null;
 
+    public bool animate = true;
+
     public void Init(string button)
     {
         buttonText.text = button;
@@ -19,17 +21,31 @@ public class InteractionPromptWidget : MonoBehaviour
 
     public void Show(float showDuration)
     {
-        buttonPrompt.DOKill();
-        buttonPrompt.transform.localScale = Vector3.zero;
-        buttonPrompt.DOScale(1.0f, showDuration)
-            .SetEase(Ease.OutExpo);
+        if (animate)
+        {
+            buttonPrompt.DOKill();
+            buttonPrompt.DOScale(1.0f, showDuration)
+                .From(0.0f)
+                .SetEase(Ease.OutExpo);
+        }
+        else
+        {
+            buttonPrompt.transform.localScale = Vector3.one;
+        }
     }
 
     public void Hide(float hideDuration)
     {
-        buttonPrompt.DOKill();
-        buttonPrompt.DOScale(0.0f, hideDuration)
-            .SetEase(Ease.OutQuint);
+        if (animate)
+        {
+            buttonPrompt.DOKill();
+            buttonPrompt.DOScale(0.0f, hideDuration)
+                .SetEase(Ease.OutQuint);
+        }
+        else
+        {
+            buttonPrompt.transform.localScale = Vector3.zero;
+        }
     }
 
 }

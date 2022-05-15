@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f21895d9b6e99284ca24a97b28b33cf1, type: 3}
-  m_Name: MeleeMonster
+  m_Name: TurpleDefenceMonster
   m_EditorClassIdentifier: 
   RecipeData:
   - ingredient: {fileID: 11400000, guid: 51b29605d657ef74d996cf164ecba54a, type: 2}
     quantity: 1
-  - ingredient: {fileID: 11400000, guid: fc370fe33144e554c91304a3bbed7ee3, type: 2}
+  - ingredient: {fileID: 11400000, guid: a4f3f22dc36fa5d4fac34244c6e740de, type: 2}
     quantity: 1
   - ingredient: {fileID: 11400000, guid: ad588d69e5584ab4fa81f2f216bd6d3d, type: 2}
     quantity: 1
-  outcomeMonster: {fileID: 11400000, guid: 507fbb954ba3c2a438457c619d64cc1e, type: 2}
+  outcomeMonster: {fileID: 11400000, guid: 44ed1dadf15b4224092c69fc0d5f49d4, type: 2}

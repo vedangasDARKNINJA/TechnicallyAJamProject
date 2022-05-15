@@ -17,8 +17,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
 
     private Material m_Material = null;
 
-    private int m_IsSelectedID = 0;
-
     protected Material pickupMaterial => m_Material;
     private bool m_IsSelected = false;
     private bool m_IsSelectable = false;
@@ -43,7 +41,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
         m_Collider = GetComponent<Collider>();
         m_InteractionPrompt = GetComponent<InteractionPromptComponent>();
 
-        m_IsSelectedID = Shader.PropertyToID("_IsSelected");
     }
 
     public virtual void OnDrop(Vector3 forward)
@@ -57,7 +54,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
 
     public virtual void OnPickUp()
     {
-        //m_Material.SetInt(m_IsSelectedID, 0);
         SetRigidbodyEnabled(false);
         m_IsSelectable = false;
     }
@@ -72,7 +68,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
         if (!m_IsSelected)
         {
             m_IsSelected = true;
-            //m_Material.SetInt(m_IsSelectedID, 1);
             m_InteractionPrompt.Show();
         }
     }
@@ -86,7 +81,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
         if (m_IsSelected)
         {
             m_IsSelected = false;
-            //m_Material.SetInt(m_IsSelectedID, 0);
             m_InteractionPrompt.Hide();
         }
     }
