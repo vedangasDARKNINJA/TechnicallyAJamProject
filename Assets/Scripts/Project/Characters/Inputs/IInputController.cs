@@ -6,5 +6,5 @@ public interface IInputController
 {
     Vector2 GetInputDirection();
     Vector2 GetInputDirectionNormalized();
-
+    Vector3 GetFacingDirection();
 }
