@@ -4,9 +4,11 @@ using UnityEngine;
 
 public interface IPickableObject
 {
-    ObjectTypes GetObjectTypes();
+    void OnSelected();
+
+    void OnDeSelected();
 
     void OnPickUp();
 
-    void OnDrop(Vector3 forward);
+    void OnDrop();
 }

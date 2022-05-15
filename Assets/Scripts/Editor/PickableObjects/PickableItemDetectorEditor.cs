@@ -16,6 +16,5 @@ public class PickableItemDetectorEditor : Editor
     {
         Handles.color = Color.red;
         Handles.DrawWireDisc(m_PickableItemDetector.transform.position, Vector3.up, m_PickableItemDetector.radius);
-        Handles.DrawWireDisc(m_PickableItemDetector.transform.position, Vector3.right, m_PickableItemDetector.radius);
     }
 }
