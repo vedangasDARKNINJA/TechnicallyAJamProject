@@ -2,35 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CauldronPickUp : MonoBehaviour, IPickableObject
+public class CauldronPickUp : PickUpObject, IDropTargetObject
 {
-    /*
-     * QUICK AND DIRTY
-     */
-    
-    private Material m_Material = null;
+    public ObjectTypes acceptTypes;
 
-    private void Awake()
+    private CauldronManager m_Manager = null;
+
+    protected override void Awake()
     {
-        m_Material = GetComponent<MeshRenderer>().material;
+        base.Awake();
+        m_Manager = GetComponent<CauldronManager>();
     }
 
-    public void OnDrop()
+    public bool AcceptsObjectType(ObjectTypes objectType)
     {
-        throw new System.NotImplementedException();
+        return ((int)acceptTypes & (int)objectType) != 0;
     }
 
-    public void OnPickUp()
+    public void OnObjectDropped(GameObject droppedObject)
     {
-        throw new System.NotImplementedException();
+        if(m_Manager!= null)
+        {
+            m_Manager.AddIngredient(droppedObject);
+        }
     }
 
-    public void OnSelected()
+    public override void OnPickUp()
     {
-        m_Material.SetInt("_IsSelected", 1);
+        base.OnPickUp();
+        if(TryGetComponent(out CauldronManager manager))
+        {
+            manager.SetState(CauldronState.Picked);
+        }
     }
-    public void OnDeSelected()
+
+    public override void OnDrop(Vector3 forward)
     {
-        m_Material.SetInt("_IsSelected", 0);
+        base.OnDrop(forward);
+        if (TryGetComponent(out CauldronManager manager))
+        {
+            manager.RestorePreviousState();
+        }
     }
 }

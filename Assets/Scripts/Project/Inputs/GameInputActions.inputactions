@@ -1,5 +1,5 @@
 {
-    "name": "InputActions",
+    "name": "GameInputActions",
     "maps": [
         {
             "name": "Player",
@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Interact",
+                    "name": "Pickup",
                     "type": "Button",
                     "id": "44f2dd01-59aa-46c9-a642-b49b1bed540c",
                     "expectedControlType": "Button",
@@ -24,13 +24,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aim",
-                    "type": "Value",
+                    "name": "Recipes",
+                    "type": "Button",
                     "id": "882cd376-9cf5-4e4d-b610-69846d886661",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -96,29 +96,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Interact",
+                    "action": "Pickup",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "e1147a66-15cd-4695-82b5-3cc0d0c84531",
-                    "path": "<Keyboard>/space",
+                    "id": "1f9fd3ae-138a-4ef3-8990-8996f8fd2703",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1f8134e7-afa4-4438-af2f-d475e204174a",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Aim",
+                    "action": "Recipes",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
