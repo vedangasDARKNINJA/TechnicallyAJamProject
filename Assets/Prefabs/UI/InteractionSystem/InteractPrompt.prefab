@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonPrompt: {fileID: 22571941170277438}
   buttonText: {fileID: 22571941564589465}
+  m_Animate: 1
 --- !u!1 &22571941564589463
 GameObject:
   m_ObjectHideFlags: 0

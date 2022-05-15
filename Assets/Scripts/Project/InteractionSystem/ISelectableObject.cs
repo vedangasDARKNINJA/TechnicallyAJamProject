@@ -6,6 +6,8 @@ public interface ISelectableObject
 {
     bool isSelected { get; }
 
+    bool isSelectable { get; }
+
     void OnSelected();
 
     void OnDeSelected();

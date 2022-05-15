@@ -17,11 +17,11 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
 
     private Material m_Material = null;
 
-    private int m_IsSelectedID = 0;
-
     protected Material pickupMaterial => m_Material;
-
+    private bool m_IsSelected = false;
+    private bool m_IsSelectable = false;
     public bool isSelected => m_IsSelected;
+    public bool isSelectable => m_IsSelectable;
 
     [SerializeField]
     protected float forceBoostForward = 2.0f;
@@ -31,18 +31,16 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
 
     public ObjectTypes objectTypes = 0;
 
-    private bool m_IsSelected = false;
-    private bool m_IsInteractive = false;
+    
 
     private InteractionPromptComponent m_InteractionPrompt = null;
-    private void Awake()
+    protected virtual void Awake()
     {
         m_Material = GetComponent<MeshRenderer>().material;
         m_RigidBody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
         m_InteractionPrompt = GetComponent<InteractionPromptComponent>();
 
-        m_IsSelectedID = Shader.PropertyToID("_IsSelected");
     }
 
     public virtual void OnDrop(Vector3 forward)
@@ -56,14 +54,13 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
 
     public virtual void OnPickUp()
     {
-        m_Material.SetInt(m_IsSelectedID, 0);
         SetRigidbodyEnabled(false);
-        m_IsInteractive = false;
+        m_IsSelectable = false;
     }
 
     public virtual void OnSelected()
     {
-        if (!m_IsInteractive)
+        if (!m_IsSelectable)
         {
             return;
         }
@@ -71,21 +68,19 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
         if (!m_IsSelected)
         {
             m_IsSelected = true;
-            m_Material.SetInt(m_IsSelectedID, 1);
             m_InteractionPrompt.Show();
         }
     }
 
     public virtual void OnDeSelected()
     {
-        if (!m_IsInteractive)
+        if (!m_IsSelectable)
         {
             return;
         }
         if (m_IsSelected)
         {
             m_IsSelected = false;
-            m_Material.SetInt(m_IsSelectedID, 0);
             m_InteractionPrompt.Hide();
         }
     }
@@ -106,7 +101,7 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
         if (collision.gameObject.CompareTag("Ground"))
         {
             m_RigidBody.isKinematic = true;
-            m_IsInteractive = true;
+            m_IsSelectable = true;
         }
     }
 }
