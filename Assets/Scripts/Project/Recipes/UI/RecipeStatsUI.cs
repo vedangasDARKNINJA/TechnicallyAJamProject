@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RecipeStatsUI : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class RecipeStatsUI : MonoBehaviour
 
     [SerializeField]
     private Button m_CancelButton;
+
+    [SerializeField]
+    private TextMeshProUGUI m_RecipeName;
 
     private Dictionary<int, RecipeIngredientUI> m_IngredientsMap = new Dictionary<int, RecipeIngredientUI>();
 
@@ -58,6 +62,7 @@ public class RecipeStatsUI : MonoBehaviour
         {
             return;
         }
+        m_RecipeName.text = recipe.outcomeMonster.identifier.ingredientName;
         m_CanvasGroup.interactable = true;
         m_CanvasGroup.blocksRaycasts = true;
         DeactivateChildren();

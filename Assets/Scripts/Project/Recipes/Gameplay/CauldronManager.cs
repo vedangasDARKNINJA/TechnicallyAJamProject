@@ -229,6 +229,15 @@ public class CauldronManager : MonoBehaviour
         }
 
         // TODO: Spawn the actual monster! 
+        if (m_CurrentRecipe)
+        {
+            GameObject monster = Instantiate(m_CurrentRecipe.outcomeMonster.prefab);
+            monster.transform.position = transform.position + 3* Vector3.up;
+            if(monster.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            {
+                rb.AddForce(10f * UnityEngine.Random.onUnitSphere);
+            }
+        }
 
         m_InteractionPrompt.SetState("Vacant");
         SetState(CauldronState.Available);

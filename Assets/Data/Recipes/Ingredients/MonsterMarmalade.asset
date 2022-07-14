@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: MonsterMarmalade
   m_EditorClassIdentifier: 
   identifier: {fileID: 11400000, guid: 454aa872244352749a38ffb009b2c139, type: 2}
-  ingredientIcon: {fileID: 0}
-  ingredientPrefab: {fileID: 0}
+  ingredientIcon: {fileID: -717592483, guid: 5009a94fa31f93947aa9e31554a933de, type: 3}
+  ingredientPrefab: {fileID: 6614637490299306042, guid: 545b50d7b113b4943af92de48f653c32,
+    type: 3}

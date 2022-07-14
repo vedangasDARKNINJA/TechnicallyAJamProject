@@ -15,9 +15,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
 
     protected Collider pickupCollider => m_Collider;
 
-    private Material m_Material = null;
-
-    protected Material pickupMaterial => m_Material;
     private bool m_IsSelected = false;
     private bool m_IsSelectable = false;
     public bool isSelected => m_IsSelected;
@@ -36,7 +33,6 @@ public class PickUpObject : MonoBehaviour, IPickableObject, ISelectableObject
     private InteractionPromptComponent m_InteractionPrompt = null;
     protected virtual void Awake()
     {
-        m_Material = GetComponent<MeshRenderer>().material;
         m_RigidBody = GetComponent<Rigidbody>();
         m_Collider = GetComponent<Collider>();
         m_InteractionPrompt = GetComponent<InteractionPromptComponent>();

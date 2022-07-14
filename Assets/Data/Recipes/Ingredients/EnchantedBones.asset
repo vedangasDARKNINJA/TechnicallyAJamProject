@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: EnchantedBones
   m_EditorClassIdentifier: 
   identifier: {fileID: 11400000, guid: 1f40cefa99afe1048a3423fedc063f86, type: 2}
-  ingredientIcon: {fileID: 0}
-  ingredientPrefab: {fileID: 0}
+  ingredientIcon: {fileID: 1412925820, guid: 5009a94fa31f93947aa9e31554a933de, type: 3}
+  ingredientPrefab: {fileID: 8589899173634968654, guid: bfae8edc221439748a7026e8390cc1f9,
+    type: 3}

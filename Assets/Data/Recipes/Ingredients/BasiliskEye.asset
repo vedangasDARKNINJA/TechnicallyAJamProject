@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: BasiliskEye
   m_EditorClassIdentifier: 
   identifier: {fileID: 11400000, guid: 596fe0276fdbcd34697ed3eef92eb171, type: 2}
-  ingredientIcon: {fileID: 0}
-  ingredientPrefab: {fileID: 0}
+  ingredientIcon: {fileID: -83908538, guid: 5009a94fa31f93947aa9e31554a933de, type: 3}
+  ingredientPrefab: {fileID: 2152431054240107377, guid: 8cf12c2c9d757b543aca20ef09d1d96b,
+    type: 3}

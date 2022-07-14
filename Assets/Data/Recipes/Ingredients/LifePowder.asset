@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: LifePowder
   m_EditorClassIdentifier: 
   identifier: {fileID: 11400000, guid: 7c59a593c5a762541bcdb91a564b23f6, type: 2}
-  ingredientIcon: {fileID: 0}
-  ingredientPrefab: {fileID: 0}
+  ingredientIcon: {fileID: -2002066994, guid: 5009a94fa31f93947aa9e31554a933de, type: 3}
+  ingredientPrefab: {fileID: 4727616222870783877, guid: 62a2e1fa2db097743a7e904684255533,
+    type: 3}

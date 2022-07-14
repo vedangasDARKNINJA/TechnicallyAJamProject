@@ -20,4 +20,4 @@ MonoBehaviour:
   attack: 0
   defense: 0
   immunity: 0
-  prefab: {fileID: 0}
+  prefab: {fileID: 7712732128325615365, guid: 0db39d3221009694f8936697bccabf25, type: 3}
